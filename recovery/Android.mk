@@ -1,4 +1,7 @@
 LOCAL_PATH := $(call my-dir)
+
+ifeq $($(TARGET_BOOTLOADER_BOARD_NAME),grouper)
+
 include $(CLEAR_VARS)
 
 LOCAL_MODULE_TAGS := eng
@@ -11,3 +14,5 @@ LOCAL_MODULE := librecovery_ui_grouper
 include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
+
+endif
