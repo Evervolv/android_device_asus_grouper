@@ -14,6 +14,8 @@
 
 LOCAL_PATH := $(call my-dir)
 
+ifeq $($(TARGET_BOOTLOADER_BOARD_NAME),grouper)
+
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := nfc.grouper
@@ -24,3 +26,5 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_CFLAGS += -D$(TARGET_DEVICE)
 
 include $(BUILD_SHARED_LIBRARY)
+
+endif
