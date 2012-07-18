@@ -15,8 +15,6 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq $($(TARGET_BOOTLOADER_BOARD_NAME),grouper)
-
 # HAL module implemenation stored in
 # hw/<POWERS_HARDWARE_MODULE_ID>.<ro.hardware>.so
 include $(CLEAR_VARS)
@@ -27,5 +25,3 @@ LOCAL_SRC_FILES := power.c
 LOCAL_MODULE := power.grouper
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_SHARED_LIBRARY)
-
-endif
