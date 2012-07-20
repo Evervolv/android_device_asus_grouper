@@ -226,4 +226,8 @@
 
     <!-- The attenuation in dB applied to the lock/unlock sounds. -->
     <integer name="config_lockSoundVolumeDb">0</integer>
+
+<!-- If true, the screen can be rotated via the accelerometer in all 4
+    rotations as the default behavior. -->
+    <bool name="config_allowAllRotations">true</bool>
 </resources>
