@@ -36,6 +36,8 @@ USE_PROPRIETARY_AUDIO_EXTENSIONS := false
 # inherit from the proprietary version
 # needed for BP-flashing updater extensions
 
+TARGET_NO_BOOTLOADER := true
+
 TARGET_BOARD_PLATFORM := tegra3
 TARGET_TEGRA_VERSION := t30
 
