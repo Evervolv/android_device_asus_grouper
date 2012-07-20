@@ -21,4 +21,10 @@
     <integer name="def_screen_off_timeout">120000</integer>
     <!-- Set the automatic brightness mode on by default -->
     <bool name="def_screen_brightness_automatic_mode">true</bool>
+    <!-- Allow side loading -->
+    <bool name="def_install_non_market_apps">true</bool>
+    <!-- Default for UI touch sounds enabled -->
+    <bool name="def_sound_effects_enabled">false</bool>
+    <!-- Default for Lockscreen sounds enabled -->
+    <integer name="def_lockscreen_sounds_enabled">0</integer>
 </resources>
