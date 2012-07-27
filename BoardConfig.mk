@@ -95,3 +95,5 @@ NEED_WORKAROUND_CORTEX_A9_745320 := true
 
 TARGET_RECOVERY_UI_LIB := librecovery_ui_grouper
 TARGET_RELEASETOOLS_EXTENSIONS := device/asus/grouper
+
+TARGET_EXTRA_CFLAGS := $(call cc-ifversion, -ge, 46, $(call cc-option,-mtune=cortex-a9,$(call cc-option,-mtune=cortex-a8)) $(call cc-option,-mcpu=cortex-a9,$(call cc-option,-mcpu=cortex-a8)))
