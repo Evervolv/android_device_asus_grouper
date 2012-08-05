@@ -1,0 +1,7 @@
+[
+    {
+        "repository": "android_kernel_grouper",
+        "target_path": "kernel/grouper",
+        "branch": "jellybean"
+    }
+]
