@@ -85,3 +85,5 @@ BUILD_KERNEL := true
 
 # Tune for cortex-a9
 TARGET_EXTRA_CFLAGS := $(call cc-ifversion, -ge, 46, $(call cc-option,-mtune=cortex-a9,$(call cc-option,-mtune=cortex-a8)) $(call cc-option,-mcpu=cortex-a9,$(call cc-option,-mcpu=cortex-a8)))
+
+BOARD_USES_GROUPER_MODULES := true
