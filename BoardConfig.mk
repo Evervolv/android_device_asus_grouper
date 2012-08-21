@@ -76,6 +76,9 @@ TARGET_PREBUILT_KERNEL := device/asus/grouper/kernel
 TARGET_KERNEL_SOURCE := kernel/grouper
 TARGET_KERNEL_CONFIG := evervolv_grouper_defconfig
 
+# Pull all dictionaries
+TARGET_USE_KEYBOARD := international
+
 BOARD_USES_GENERIC_AUDIO := false
 BOARD_USES_ALSA_AUDIO := false
 
