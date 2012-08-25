@@ -24,6 +24,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
     wifi.interface=wlan0 \
     wifi.supplicant_scan_interval=15 \
     tf.enable=y \
+    net.hostname=evgrouper \
     drm.service.enabled=true \
     ro.carrier=wifi-only
 

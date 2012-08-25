@@ -360,3 +360,5 @@ service touch_fw_update /system/bin/sh -c "echo /system/etc/firmware/touch_fw.ek
     group root
     oneshot
 
+on property:sys.boot_completed=1
+    start sshd
