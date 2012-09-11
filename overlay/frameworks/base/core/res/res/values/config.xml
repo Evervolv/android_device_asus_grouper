@@ -236,4 +236,6 @@
     <!-- If this is true, the screen will fade off. -->
     <bool name="config_animateScreenLights">false</bool>
 
+    <!--  Maximum number of supported users -->
+    <integer name="config_multiuserMaximumUsers">8</integer>
 </resources>
