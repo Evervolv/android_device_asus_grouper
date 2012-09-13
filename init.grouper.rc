@@ -18,6 +18,7 @@ on init
     # Support legacy paths
     symlink /storage/emulated_legacy /sdcard
     symlink /storage/emulated_legacy /mnt/sdcard
+    symlink /storage/emulated_legacy /storage/sdcard0
 
     # create directory for mounting usb drives
     mkdir /storage/usbdisk 0666 system system
