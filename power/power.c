@@ -95,8 +95,8 @@ static void grouper_power_init(struct power_module *module)
 }
 
 #define SCALING_MAX_BUF_SZ  8
-static const char scaling_max_freq_def[SCALING_MAX_BUF_SZ] = "1300000";
 static char scaling_max_freq[SCALING_MAX_BUF_SZ]           = "1300000";
+static char screenoff_max_freq[SCALING_MAX_BUF_SZ]         = "640000";
 
 static void grouper_power_set_interactive(struct power_module *module, int on)
 {
@@ -112,14 +112,12 @@ static void grouper_power_set_interactive(struct power_module *module, int on)
         /* read the current scaling max freq and save it before updating */
         len = sysfs_read("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq",
                          buf, sizeof(buf));
-        if (len > 0)
-            strcpy(scaling_max_freq, buf);
-        else /* set default value on error */
-            strcpy(scaling_max_freq, scaling_max_freq_def);
+        if (len > 0 && strcmp(buf, screenoff_max_freq) != 0)
+                strcpy(scaling_max_freq, buf);
     }
 
     sysfs_write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq",
-                on ? scaling_max_freq : "640000");
+                on ? scaling_max_freq : screenoff_max_freq);
 
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/input_boost",
                 on ? "1" : "0");
