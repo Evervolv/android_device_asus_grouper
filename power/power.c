@@ -25,9 +25,17 @@
 #include <hardware/hardware.h>
 #include <hardware/power.h>
 
-#define BOOST_PATH      "/sys/devices/system/cpu/cpufreq/interactive/boost"
-static int boost_fd = -1;
-static int boost_warned;
+#define BOOSTPULSE_PATH "/sys/devices/system/cpu/cpufreq/interactive/boostpulse"
+#define SCALING_MAX_BUF_SZ  10
+static char scaling_max_freq[SCALING_MAX_BUF_SZ]   = "1300000";
+static char screenoff_max_freq[SCALING_MAX_BUF_SZ] = "640000";
+
+struct grouper_power_module {
+    struct power_module base;
+    pthread_mutex_t lock;
+    int boostpulse_fd;
+    int boostpulse_warned;
+};
 
 static void sysfs_write(char *path, char *s)
 {
@@ -54,6 +62,7 @@ static int sysfs_read(const char *path, char *s, size_t l)
 {
     char buf[80];
     int ret = -1;
+    int count;
     int fd = open(path, O_RDONLY);
 
     if (fd < 0) {
@@ -63,16 +72,41 @@ static int sysfs_read(const char *path, char *s, size_t l)
     }
 
     do {
-        ret = read(fd, s, l);
-    } while (ret < 0 && errno == EINTR); /* Retry if interrupted */
+        count = read(fd, s, l - 1);
+    } while (count < 0 && errno == EINTR); /* Retry if interrupted */
 
-    if (ret < 0) {
+    if (count < 0) {
         strerror_r(errno, buf, sizeof(buf));
         ALOGE("Error reading from %s: %s\n", path, buf);
+    } else {
+        s[count] = '\0';
+        ret = count;
     }
 
     close(fd);
     return ret;
+}
+
+static int boostpulse_open(struct grouper_power_module *grouper)
+{
+    char buf[80];
+
+    pthread_mutex_lock(&grouper->lock);
+
+    if (grouper->boostpulse_fd < 0) {
+        grouper->boostpulse_fd = open(BOOSTPULSE_PATH, O_WRONLY);
+
+        if (grouper->boostpulse_fd < 0) {
+            if (!grouper->boostpulse_warned) {
+                strerror_r(errno, buf, sizeof(buf));
+                ALOGE("Error opening %s: %s\n", BOOSTPULSE_PATH, buf);
+                grouper->boostpulse_warned = 1;
+            }
+        }
+    }
+
+    pthread_mutex_unlock(&grouper->lock);
+    return grouper->boostpulse_fd;
 }
 
 static void grouper_power_init(struct power_module *module)
@@ -93,10 +127,6 @@ static void grouper_power_init(struct power_module *module)
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/input_boost",
                 "1");
 }
-
-#define SCALING_MAX_BUF_SZ  8
-static char scaling_max_freq[SCALING_MAX_BUF_SZ]           = "1300000";
-static char screenoff_max_freq[SCALING_MAX_BUF_SZ]         = "640000";
 
 static void grouper_power_set_interactive(struct power_module *module, int on)
 {
@@ -130,15 +160,36 @@ static void grouper_power_set_interactive(struct power_module *module, int on)
 static void grouper_power_hint(struct power_module *module, power_hint_t hint,
                             void *data)
 {
+    struct grouper_power_module *grouper = (struct grouper_power_module *) module;
     char buf[80];
     int len;
+    int duration = 1;
 
     switch (hint) {
+    case POWER_HINT_INTERACTION:
+    case POWER_HINT_CPU_BOOST:
+        if (boostpulse_open(grouper) >= 0) {
+            if (data != NULL)
+                duration = (int) data;
+            snprintf(buf, sizeof(buf), "%d", duration);
+            len = write(grouper->boostpulse_fd, buf, strlen(buf));
+            if (len < 0) {
+                strerror_r(errno, buf, sizeof(buf));
+                ALOGE("Error writing to %s: %s\n", BOOSTPULSE_PATH, buf);
+                pthread_mutex_lock(&grouper->lock);
+                close(grouper->boostpulse_fd);
+                grouper->boostpulse_fd = -1;
+                grouper->boostpulse_warned = 0;
+                pthread_mutex_unlock(&grouper->lock);
+            }
+        }
+        break;
+
     case POWER_HINT_VSYNC:
         break;
 
     default:
-            break;
+        break;
     }
 }
 
@@ -146,18 +197,24 @@ static struct hw_module_methods_t power_module_methods = {
     .open = NULL,
 };
 
-struct power_module HAL_MODULE_INFO_SYM = {
-    .common = {
-        .tag = HARDWARE_MODULE_TAG,
-        .module_api_version = POWER_MODULE_API_VERSION_0_2,
-        .hal_api_version = HARDWARE_HAL_API_VERSION,
-        .id = POWER_HARDWARE_MODULE_ID,
-        .name = "Grouper Power HAL",
-        .author = "The Android Open Source Project",
-        .methods = &power_module_methods,
+struct grouper_power_module HAL_MODULE_INFO_SYM = {
+    base: {
+        common: {
+            tag: HARDWARE_MODULE_TAG,
+            module_api_version: POWER_MODULE_API_VERSION_0_2,
+            hal_api_version: HARDWARE_HAL_API_VERSION,
+            id: POWER_HARDWARE_MODULE_ID,
+            name: "Grouper Power HAL",
+            author: "The Android Open Source Project",
+            methods: &power_module_methods,
+        },
+
+        init: grouper_power_init,
+        setInteractive: grouper_power_set_interactive,
+        powerHint: grouper_power_hint,
     },
 
-    .init = grouper_power_init,
-    .setInteractive = grouper_power_set_interactive,
-    .powerHint = grouper_power_hint,
+    lock: PTHREAD_MUTEX_INITIALIZER,
+    boostpulse_fd: -1,
+    boostpulse_warned: 0,
 };
