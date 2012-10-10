@@ -28,3 +28,6 @@ PRODUCT_COPY_FILES += \
 
 # Hot reboot
 PRODUCT_PACKAGE_OVERLAYS += vendor/ev/overlay/hot_reboot
+
+# Pull all dictionaries
+TARGET_USE_KEYBOARD := international

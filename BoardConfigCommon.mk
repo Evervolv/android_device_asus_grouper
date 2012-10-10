@@ -23,6 +23,7 @@
 # inherit from the proprietary version
 # needed for BP-flashing updater extensions
 
+TARGET_NO_BOOTLOADER := true
 TARGET_BOARD_PLATFORM := tegra3
 TARGET_TEGRA_VERSION := t30
 
@@ -33,6 +34,7 @@ TARGET_ARCH := arm
 TARGET_ARCH_VARIANT := armv7-a-neon
 ARCH_ARM_HAVE_TLS_REGISTER := true
 ARCH_ARM_USE_NON_NEON_MEMCPY := true
+TARGET_USE_LINARO_STRING_ROUTINES := true
 
 TARGET_USERIMAGES_USE_EXT4 := true
 
@@ -47,7 +49,6 @@ BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_bcmdhd
 BOARD_HOSTAPD_DRIVER        := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB   := lib_driver_cmd_bcmdhd
 BOARD_WLAN_DEVICE           := bcmdhd
-#WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/bcm4329.ko"
 WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/bcmdhd/parameters/firmware_path"
 WIFI_DRIVER_FW_PATH_STA     := "/vendor/firmware/fw_bcmdhd.bin"
 WIFI_DRIVER_FW_PATH_AP      := "/vendor/firmware/fw_bcmdhd_apsta.bin"
@@ -80,3 +81,11 @@ NEED_WORKAROUND_CORTEX_A9_745320 := true
 
 TARGET_RECOVERY_UI_LIB := librecovery_ui_grouper
 TARGET_RELEASETOOLS_EXTENSIONS := device/asus/grouper
+
+TARGET_PREBUILT_KERNEL := device/asus/grouper/kernel
+TARGET_KERNEL_SOURCE := kernel/grouper
+TARGET_KERNEL_CONFIG := evervolv_grouper_defconfig
+BUILD_KERNEL := true
+
+# Tune for cortex-a9
+TARGET_EXTRA_CFLAGS := $(call cc-ifversion, -ge, 46, $(call cc-option,-mtune=cortex-a9,$(call cc-option,-mtune=cortex-a8)) $(call cc-option,-mcpu=cortex-a9,$(call cc-option,-mcpu=cortex-a8)))
