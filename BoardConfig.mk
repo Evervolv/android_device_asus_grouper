@@ -36,8 +36,6 @@ USE_PROPRIETARY_AUDIO_EXTENSIONS := false
 # inherit from the proprietary version
 # needed for BP-flashing updater extensions
 
-TARGET_NO_BOOTLOADER := true
-
 TARGET_BOARD_PLATFORM := tegra3
 TARGET_TEGRA_VERSION := t30
 
@@ -48,7 +46,6 @@ TARGET_ARCH := arm
 TARGET_ARCH_VARIANT := armv7-a-neon
 ARCH_ARM_HAVE_TLS_REGISTER := true
 ARCH_ARM_USE_NON_NEON_MEMCPY := true
-TARGET_USE_LINARO_STRING_ROUTINES := true
 
 TARGET_USERIMAGES_USE_EXT4 := true
 
@@ -71,14 +68,6 @@ WIFI_DRIVER_FW_PATH_P2P     := "/vendor/firmware/fw_bcmdhd_p2p.bin"
 
 TARGET_BOOTLOADER_BOARD_NAME := grouper
 TARGET_BOARD_INFO_FILE := device/asus/grouper/board-info.txt
-
-TARGET_PREBUILT_KERNEL := device/asus/grouper/kernel
-TARGET_KERNEL_SOURCE := kernel/grouper
-TARGET_KERNEL_CONFIG := evervolv_grouper_defconfig
-BUILD_KERNEL := true
-
-# Pull all dictionaries
-TARGET_USE_KEYBOARD := international
 
 BOARD_USES_GENERIC_AUDIO := false
 BOARD_USES_ALSA_AUDIO := false
@@ -104,5 +93,3 @@ NEED_WORKAROUND_CORTEX_A9_745320 := true
 
 TARGET_RECOVERY_UI_LIB := librecovery_ui_grouper
 TARGET_RELEASETOOLS_EXTENSIONS := device/asus/grouper
-
-TARGET_EXTRA_CFLAGS := $(call cc-ifversion, -ge, 46, $(call cc-option,-mtune=cortex-a9,$(call cc-option,-mtune=cortex-a8)) $(call cc-option,-mcpu=cortex-a9,$(call cc-option,-mcpu=cortex-a8)))
