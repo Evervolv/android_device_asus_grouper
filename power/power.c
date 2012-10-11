@@ -142,8 +142,10 @@ static void grouper_power_set_interactive(struct power_module *module, int on)
         /* read the current scaling max freq and save it before updating */
         len = sysfs_read("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq",
                          buf, sizeof(buf));
-        if (len > 0 && strcmp(buf, screenoff_max_freq) != 0)
+        if (len > 0 && strncmp(buf, screenoff_max_freq,
+                                strlen(screenoff_max_freq)) != 0) {
                 strcpy(scaling_max_freq, buf);
+        }
     }
 
     sysfs_write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq",
