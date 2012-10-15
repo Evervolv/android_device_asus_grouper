@@ -124,8 +124,6 @@ static void grouper_power_init(struct power_module *module)
                 "85");
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/boost_factor",
                 "0");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/input_boost",
-                "1");
 }
 
 static void grouper_power_set_interactive(struct power_module *module, int on)
@@ -150,9 +148,6 @@ static void grouper_power_set_interactive(struct power_module *module, int on)
 
     sysfs_write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq",
                 on ? scaling_max_freq : screenoff_max_freq);
-
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/input_boost",
-                on ? "1" : "0");
 
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/boost_factor",
                 on ? "0" : "2");
