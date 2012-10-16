@@ -112,8 +112,8 @@ static int boostpulse_open(struct grouper_power_module *grouper)
 static void grouper_power_init(struct power_module *module)
 {
     /*
-     * cpufreq interactive governor: timer 20ms, min sample 100ms,
-     * hispeed 700MHz at load 40%
+     * cpufreq interactive governor: timer 20ms, min sample 30ms,
+     * hispeed 1GHz
      */
 
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/timer_rate",
@@ -124,6 +124,8 @@ static void grouper_power_init(struct power_module *module)
                 "85");
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/boost_factor",
                 "0");
+    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/hispeed_freq",
+                "1000000");
 }
 
 static void grouper_power_set_interactive(struct power_module *module, int on)
