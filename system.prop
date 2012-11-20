@@ -12,6 +12,7 @@ debug.nfc.se=false
 # set default lcd density to TVDPI
 ro.sf.lcd_density=213
 
+# properties from stock build
 ro.facelock.black_timeout=1250
 ro.facelock.det_timeout=1500
 ro.facelock.rec_timeout=2500
@@ -20,3 +21,4 @@ ro.facelock.est_max_time=1000
 ro.facelock.use_intro_anim=true
 ro.media.effect.bgdropper.adj=0.2
 camera.flash_off=0
+ro.com.widevine.cachesize=16777216
