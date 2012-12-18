@@ -72,14 +72,14 @@ static int sysfs_read(const char *path, char *s, size_t l)
     }
 
     do {
-        count = read(fd, s, l - 1);
+        count = read(fd, s, l);
     } while (count < 0 && errno == EINTR); /* Retry if interrupted */
 
     if (count < 0) {
         strerror_r(errno, buf, sizeof(buf));
         ALOGE("Error reading from %s: %s\n", path, buf);
     } else {
-        s[count] = '\0';
+        s[count-1] = '\0'; /* Kill the newline */
         ret = count;
     }
 
@@ -120,8 +120,8 @@ static void grouper_power_init(struct power_module *module)
                 "20000");
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/min_sample_time",
                 "30000");
-    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load",
-                "85");
+    sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/target_loads",
+                "80 1000000:90 1300000:95");
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/hispeed_freq",
                 "1000000");
 }
@@ -157,15 +157,11 @@ static void grouper_power_hint(struct power_module *module, power_hint_t hint,
     struct grouper_power_module *grouper = (struct grouper_power_module *) module;
     char buf[80];
     int len;
-    int duration = 1;
 
     switch (hint) {
     case POWER_HINT_INTERACTION:
         if (boostpulse_open(grouper) >= 0) {
-            if (data != NULL)
-                duration = (int) data;
-            snprintf(buf, sizeof(buf), "%d", duration);
-            len = write(grouper->boostpulse_fd, buf, strlen(buf));
+            len = write(grouper->boostpulse_fd, "1", 1);
             if (len < 0) {
                 strerror_r(errno, buf, sizeof(buf));
                 ALOGE("Error writing to %s: %s\n", BOOSTPULSE_PATH, buf);
