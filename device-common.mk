@@ -79,8 +79,6 @@ PRODUCT_COPY_FILES += \
 # NFC packages
 PRODUCT_PACKAGES += \
     nfc.grouper \
-    libnfc \
-    libnfc_jni \
     Nfc \
     Tag \
     com.android.nfc_extras
