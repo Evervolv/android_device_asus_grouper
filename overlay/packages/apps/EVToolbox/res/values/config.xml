@@ -3,7 +3,7 @@
     <bool name="config_has_wimax" translatable="false">false</bool>
     <bool name="config_has_mobile_data" translatable="false">false</bool>
     <bool name="config_has_mobile_radio" translatable="false">false</bool>
-    <bool name="config_allow_eclair_lock" translatable="false">false</bool>
+    <bool name="config_disableOldLocks" translatable="false">true</bool>
 
     <string name="config_defaultDpi">213</string>
     <string name="config_recommendedTabletDpi">190</string>
