@@ -78,9 +78,6 @@ endif
 # Avoid the generation of ldrcc instructions
 NEED_WORKAROUND_CORTEX_A9_745320 := true
 
-TARGET_KERNEL_SOURCE := kernel/grouper
-TARGET_KERNEL_CONFIG := evervolv_grouper_defconfig
-
 # Tune for cortex-a9
 TARGET_EXTRA_CFLAGS := $(call cc-ifversion, -ge, 46, $(call cc-option,-mtune=cortex-a9,$(call cc-option,-mtune=cortex-a8)) $(call cc-option,-mcpu=cortex-a9,$(call cc-option,-mcpu=cortex-a8)))
 
