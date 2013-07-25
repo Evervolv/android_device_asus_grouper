@@ -11,13 +11,12 @@ PRODUCT_BRAND   := google
 PRODUCT_DEVICE  := grouper
 PRODUCT_MODEL   := Nexus 7
 PRODUCT_MANUFACTURER := asus
-PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_NAME=nakasi BUILD_FINGERPRINT=google/nakasi/grouper:4.2.2/JDQ39/573038:user/release-keys PRIVATE_BUILD_DESC="nakasi-user 4.2.2 JDQ39 573038 release-keys"
+PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_NAME=nakasi BUILD_FINGERPRINT=google/nakasi/grouper:4.3/JWR66V/737497:user/release-keys PRIVATE_BUILD_DESC="nakasi-user 4.3 JWR66V 737497 release-keys"
 
 #
 # Set up the product codename, build version & MOTD.
 #
 PRODUCT_CODENAME := Mirus
-PRODUCT_VERSION_DEVICE_SPECIFIC :=
 
 PRODUCT_MOTD :="\n\n\n--------------------MESSAGE---------------------\nThank you for choosing Evervolv for your Google Nexus 7\nPlease visit us at \#evervolv on irc.freenode.net\nFollow @preludedrew for the latest Evervolv updates\nGet the latest rom at evervolv.com\n------------------------------------------------\n"
 
