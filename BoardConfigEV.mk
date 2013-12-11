@@ -13,5 +13,5 @@
 # limitations under the License.
 
 TARGET_KERNEL_SOURCE := kernel/grouper
-TARGET_KERNEL_CONFIG := evervolv_grouper_defconfig
+TARGET_KERNEL_CONFIG := tegra3_android_defconfig
 TARGET_KERNEL_NO_MODULES := true
