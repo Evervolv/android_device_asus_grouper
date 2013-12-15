@@ -14,8 +14,8 @@ PRODUCT_MANUFACTURER := asus
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
     PRODUCT_NAME=nakasi \
-    BUILD_FINGERPRINT="google/nakasi/grouper:4.4/KRT16S/920375:user/release-keys" \
-    PRIVATE_BUILD_DESC="nakasi-user 4.4 KRT16S 920375 release-keys"
+    BUILD_FINGERPRINT="google/nakasi/grouper:4.4.2/KOT49H/937116:user/release-keys" \
+    PRIVATE_BUILD_DESC="nakasi-user 4.4.2 KOT49H 937116 release-keys"
 
 #
 # Set up the product codename, build version & MOTD.
