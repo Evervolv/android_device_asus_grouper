@@ -15,3 +15,6 @@
 TARGET_KERNEL_SOURCE := kernel/grouper
 TARGET_KERNEL_CONFIG := tegra3_android_defconfig
 TARGET_KERNEL_NO_MODULES := true
+
+#twrp
+DEVICE_RESOLUTION := 800x1280
